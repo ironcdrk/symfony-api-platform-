@@ -19,16 +19,16 @@ help: ## Show this help message
 
 run: ## Start the containers
 	docker network create symfony-api-platform-network || true
-	U_ID=${UID} docker compose up -d
+	U_ID=${UID} docker-compose up -d
 
 stop: ## Stop the containers
-	U_ID=${UID} docker compose stop
+	U_ID=${UID} docker-compose stop
 
 restart: ## Restart the containers
 	$(MAKE) stop && $(MAKE) run
 
 build: ## Rebuilds all the containers
-	U_ID=${UID} docker compose build
+	U_ID=${UID} docker-compose build
 
 prepare: ## Runs backend commands
 	$(MAKE) composer-install

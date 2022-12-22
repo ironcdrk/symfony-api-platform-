@@ -23,6 +23,8 @@ abstract class BaseRepository
 
     /**
      * BaseRepository constructor.
+     * @param ManagerRegistry $managerRegistry
+     * @param Connection $connection
      */
     public function __construct(ManagerRegistry $managerRegistry, Connection $connection)
     {

@@ -1,29 +1,24 @@
 <?php
 
-
 namespace App\Entity;
 
 use DateTime;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Uid\Uuid;
-
+use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Usuario
+ * User
  *
- * @ORM\Table(name="symfony_db.user")
- * @ORM\Entity(repositoryClass="App\Repository\Core\UsuarioRepository")
+ * @ORM\Table(name="user")
+ * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @ORM\HasLifecycleCallbacks()
- */
-
-/**
  * @method string getUserIdentifier()
  */
 class User implements UserInterface
 {
     /**
      * @var string
-     *
      * @ORM\Column(name="id", type="string",length=36)
      * @ORM\Id
      */
@@ -53,7 +48,7 @@ class User implements UserInterface
     /**
      * @var string
      *
-     * @ORM\Column(name="password", type="string", length=255, nullable=true)
+     * @ORM\Column(name="avatar", type="string", length=255, nullable=true)
      */
     private ?string $avatar;
 
@@ -94,6 +89,7 @@ class User implements UserInterface
      * User constructor.
      * @param string $name
      * @param string $email
+     * @throws \Exception
      */
     public function __construct(string $name, string $email)
     {

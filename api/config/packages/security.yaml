@@ -28,7 +28,7 @@ security:
         login:
             pattern: /api/v1/users/login
             stateless: true
-#            anonymous: true
+#           anonymous: true  < deprecado en versiones recientes de symfony >
             provider: user_provider
             json_login:
                 check_path: /api/v1/users/login_check

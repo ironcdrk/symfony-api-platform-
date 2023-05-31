@@ -25,6 +25,10 @@ security:
             pattern: ^/api/v1/docs
             methods: [GET]
             security: false
+        activate:
+            pattern: ^/api/v1/users/.*/activate
+            methods: [PUT]
+            security: false
         login:
             pattern: /api/v1/users/login
             stateless: true

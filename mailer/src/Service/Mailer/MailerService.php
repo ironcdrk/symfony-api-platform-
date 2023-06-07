@@ -11,6 +11,9 @@ use Psr\Log\LoggerInterface;
 
 use Symfony\Component\Mime\Email;
 use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class MailerService
 {
@@ -38,7 +41,12 @@ class MailerService
     }
 
     /**
-     * @throws \Exception
+     * @param string $receiver
+     * @param string $template
+     * @param array $payload
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function send(string $receiver, string $template, array $payload): void
     {

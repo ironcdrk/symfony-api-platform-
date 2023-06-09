@@ -102,3 +102,29 @@ App\Entity\User:
       openapi_context:
         summary: Activates a user
 #      security: is_granted("USER_UPDATE", object)
+    reset_password:
+      method: PUT
+      path: /users/{id}/reset_password
+      controller: App\Api\Action\User\ResetPassword
+      deserialize: false
+      openapi_context:
+        summary: Reset user password
+        requestBody:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  resetPasswordToken:
+                    type: string
+                    required: true
+                  password:
+                    type: string
+                    required: true
+        responses:
+          200:
+            description: OK
+            content:
+              application/ld+json:
+                schema:
+                  $ref: '#/components/schemas/User:jsonld-user_read'

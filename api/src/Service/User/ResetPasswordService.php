@@ -8,7 +8,7 @@ use App\Entity\User;
 use App\Repository\UserRepository;
 use App\Service\Password\EncoderService;
 use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMException;
+use Doctrine\ORM\Exception\ORMException;
 
 class ResetPasswordService
 {

@@ -8,7 +8,7 @@ App\Entity\User:
       path: /users/register
       controller: App\Api\Action\User\Register
       denormalization_context:
-        groups: [user_post]
+        groups: [user_register]
       openapi_context:
         summary: Register a new user
     resend_activation_email:
@@ -92,6 +92,16 @@ App\Entity\User:
   itemOperations:
     get:
       method: GET
+      security: is_granted("USER_READ", object)
+    put:
+      method: PUT
+      security: is_granted("USER_UPDATE", object)
+      denormalization_context:
+        groups: [user_update]
+    delete:
+      method: DELETE
+      security: is_granted("USER_DELETE", object)
+
     activate:
       method: PUT
       path: /users/{id}/activate
@@ -101,7 +111,7 @@ App\Entity\User:
         groups: [user_activate]
       openapi_context:
         summary: Activates a user
-#      security: is_granted("USER_UPDATE", object)
+
     reset_password:
       method: PUT
       path: /users/{id}/reset_password
@@ -127,4 +137,31 @@ App\Entity\User:
             content:
               application/ld+json:
                 schema:
-                  $ref: '#/components/schemas/User:jsonld-user_read'
+                  $ref: '#/components/schemas/User.jsonld-user_read'
+
+    change_password:
+      method: PUT
+      path: /users/{id}/change_password
+      controller: App\Api\Action\User\ChangePassword
+      deserialize: false
+      openapi_context:
+        summary: Changes user password
+        requestBody:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  oldPassword:
+                    type: string
+                    required: true
+                  newPassword:
+                    type: string
+                    required: true
+        responses:
+          200:
+            description: OK
+            content:
+              application/ld+json:
+                schema:
+                  $ref: '#/components/schemas/User.jsonld-user_read'

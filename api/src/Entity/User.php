@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Uid\Uuid;
 use Doctrine\ORM\Mapping as ORM;
@@ -85,6 +87,9 @@ class User implements UserInterface
      **/
     private \DateTime $updatedAt;
 
+
+    private Collection $groups;
+
     /**
      * User constructor.
      * @param string $name
@@ -103,6 +108,7 @@ class User implements UserInterface
         $this->active = false;
         $this->createdAt = new \DateTime();
         $this->markAsUpdated();
+        $this->groups = new ArrayCollection();
     }
 
     /**
@@ -254,6 +260,34 @@ class User implements UserInterface
         $this->updatedAt = new \DateTime();
     }
 
+    /**
+     * @return Collection|Group[]
+     */
+    public function getGroups(): Collection
+    {
+        return $this->groups;
+    }
+
+    public function addGroup(Group $group): void
+    {
+        if ($this->groups->contains($group)) {
+            return;
+        }
+
+        $this->groups->add($group);
+    }
+
+    public function removeGroup(Group $group): void
+    {
+        if ($this->groups->contains($group)) {
+            $this->groups->removeElement($group);
+        }
+    }
+
+    public function isMemberOfGroup(Group $group): bool
+    {
+        return $this->groups->contains($group);
+    }
 
     /**
      * @inheritDoc
@@ -279,6 +313,12 @@ class User implements UserInterface
         // TODO: Implement eraseCredentials() method.
     }
 
+    public function equals(User $user): bool
+    {
+        return $this->id === $user->getId();
+    }
+
+
     /**
      * @inheritDoc
      */
@@ -291,4 +331,5 @@ class User implements UserInterface
     {
         // TODO: Implement @method string getUserIdentifier()
     }
+
 }

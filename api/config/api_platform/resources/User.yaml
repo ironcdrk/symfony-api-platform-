@@ -165,3 +165,10 @@ App\Entity\User:
               application/ld+json:
                 schema:
                   $ref: '#/components/schemas/User.jsonld-user_read'
+
+  properties:
+    groups:
+      subresource:
+        resourceClass: App\Entity\Group
+        collection: true
+        maxDepth: 1

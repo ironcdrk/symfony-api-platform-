@@ -13,7 +13,7 @@ use DateTime;
 /**
  * Group
  *
- * @ORM\Table(name="group")
+ * @ORM\Table(name="user_group")
  * @ORM\Entity(repositoryClass="App\Repository\GroupRepository")
  * @ORM\HasLifecycleCallbacks()
  */

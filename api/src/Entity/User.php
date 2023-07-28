@@ -91,6 +91,7 @@ class User implements UserInterface
 
 
     private Collection $groups;
+    private Collection $categories;
 
     /**
      * User constructor.
@@ -111,6 +112,7 @@ class User implements UserInterface
         $this->createdAt = new \DateTime();
         $this->markAsUpdated();
         $this->groups = new ArrayCollection();
+        $this->categories = new ArrayCollection();
     }
 
     /**
@@ -289,6 +291,14 @@ class User implements UserInterface
     public function isMemberOfGroup(Group $group): bool
     {
         return $this->groups->contains($group);
+    }
+
+    /**
+     * @return Collection|Category[]
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
     }
 
     /**

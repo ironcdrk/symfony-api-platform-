@@ -6,6 +6,7 @@ namespace App\Doctrine\Extension;
 
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
 use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
+use App\Entity\Category;
 use App\Entity\Group;
 use App\Entity\User;
 use App\Exception\Group\GroupNotFoundException;
@@ -22,7 +23,7 @@ class CurrentUserExtension implements QueryCollectionExtensionInterface
     public function __construct(TokenStorageInterface $tokenStorage, GroupRepository $usergroupRepository)
     {
         $this->tokenStorage = $tokenStorage;
-        $this->groupRepository = $usergroupRepository;
+        $this->usergroupRepository = $usergroupRepository;
     }
 
 
@@ -60,16 +61,34 @@ class CurrentUserExtension implements QueryCollectionExtensionInterface
             throw new AccessDeniedHttpException('You can\'t retrieve users of another group');
         }
 
+        if (\in_array($resourceClass, [Category::class])) {
+            $parameterId = $qb->getParameters()->first()->getValue();
+
+            if ($this->isGroupAndUserIsMember($parameterId, $user)) {
+                $qb->andWhere(\sprintf('%s.group = :parameterId', $rootAlias));
+                $qb->setParameter('parameterId', $parameterId);
+            } else {
+                $qb->andWhere(\sprintf('%s.%s = :user', $rootAlias, $this->getResources()[$resourceClass]));
+                $qb->andWhere(\sprintf('%s.group IS NULL', $rootAlias));
+                $qb->setParameter('user', $user);
+            }
+        }
 
     }
 
     private function isGroupAndUserIsMember(string $parameterId, User $user): bool
     {
         try {
-            return $user->isMemberOfGroup($this->groupRepository->findOneByIdOrFail($parameterId));
+            return $user->isMemberOfGroup($this->usergroupRepository->findOneByIdOrFail($parameterId));
         } catch (GroupNotFoundException $e) {
             return false;
         }
     }
 
+    private function getResources(): array
+    {
+        return [
+            Category::class => 'owner',
+        ];
+    }
 }

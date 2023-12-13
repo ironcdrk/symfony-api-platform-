@@ -49,6 +49,7 @@ class Group
 
     private Collection $users;
     private Collection $categories;
+    private Collection $movements;
 
     public function __construct(string $name, User $owner)
     {
@@ -60,6 +61,7 @@ class Group
         $this->users = new ArrayCollection([$owner]);
         $owner->addGroup($this);
         $this->categories = new ArrayCollection();
+        $this->movements = new ArrayCollection();
     }
 
     public function getId(): string
@@ -137,6 +139,14 @@ class Group
     public function getCategories(): Collection
     {
         return $this->categories;
+    }
+
+    /**
+     * @return Collection|Movement[]
+     */
+    public function getMovements(): Collection
+    {
+        return $this->movements;
     }
 
 }

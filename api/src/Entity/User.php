@@ -92,6 +92,7 @@ class User implements UserInterface
 
     private Collection $groups;
     private Collection $categories;
+    private Collection $movements;
 
     /**
      * User constructor.
@@ -113,6 +114,7 @@ class User implements UserInterface
         $this->markAsUpdated();
         $this->groups = new ArrayCollection();
         $this->categories = new ArrayCollection();
+        $this->movements = new ArrayCollection();
     }
 
     /**
@@ -299,6 +301,14 @@ class User implements UserInterface
     public function getCategories(): Collection
     {
         return $this->categories;
+    }
+
+    /**
+     * @return Collection|Movement[]
+     */
+    public function getMovements(): Collection
+    {
+        return $this->movements;
     }
 
     /**
